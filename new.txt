@@ -1,0 +1,332 @@
+#include<iostream>
+#include<stdlib.h>
+#include<string>
+#include<fstream>
+#include <iomanip>
+using namespace std;
+
+
+
+void showmenue(){                                                       //头功能菜单
+	cout<<"************************************"<<endl;
+	cout<<"*          学生信息管理系统        *"<<endl;
+	cout<<"*                                  *"<<endl;
+	cout<<"************************************"<<endl;
+}
+
+
+class Putin{                              //输入
+private:
+	int id;
+	string name;
+	string sex;
+	int phonenum;
+	string address;
+	string *str;
+public:
+	
+	void type(int a, string b ,string c, int d, string e){
+		cout<<"输入学生学号"<<endl;
+		cin>>a;
+		cout<<"输入学生姓名"<<endl;
+		cin>>b;
+		while(1){
+		    cout<<"输入学生性别M/F（M：男，F：女）"<<endl;
+		    cin>>c;
+		    if(c=="m"||c=="M"||c=="F"||c=="f"){
+				break;}
+			else{
+				cout<<"输入不规范，请重新输入"<<endl;
+
+			}
+		};
+		cout<<"输入学生联系电话"<<endl;
+		cin>>d;
+		cout<<"输入学生住址"<<endl;
+		cin>>e;
+
+		id=a;
+		name=b;
+		sex=c;
+		phonenum=d;
+		address=e;
+	}
+
+	void show(){
+		cout<<"成功录入一名学生信息"<<endl<<endl;
+		cout<<setiosflags(ios::left)<<setw(15)<<"学号"<<setw(15)<<"姓名"<<setw(15)<<"性别"<<setw(15)<<"联系电话"<<setw(15)<<"地址"<<endl;
+		cout<<setiosflags(ios::left)<<setw(15)<<id<<setw(15)<<name<<setw(15)<<sex<<setw(15)<<phonenum<<setw(15)<<address<<endl<<endl;
+	}
+
+	void file();
+	void del();
+	void display();
+	void search();
+	void change();
+};
+
+
+void Putin::file(){                      //写入文件
+	ofstream fout("file.txt",ios::app);
+	
+	if(!fout){
+		cout<<"无法打开文件"<<endl;
+	}
+
+	fout<<setiosflags(ios::left)<<setw(15)<<id<<setw(15)<<name<<setw(15)<<sex<<setw(15)<<phonenum<<setw(15)<<address<<endl;
+	fout.close();
+}
+
+
+void Putin::search(){                                        //查询信息
+	int i;
+	string ch;
+	ifstream fin("file.txt",ios::in);	
+	if (!fin){
+        cout<<"Cannot find the file" <<endl;
+        system("pause");
+    }
+		
+    cout<<"输入你想查找的学生的编号: "<<endl;
+	cin>>i;
+	fflush(stdin);
+	while(fin>>id)
+	{
+		getline(fin,ch);	
+		if(id == i)
+		{
+			cout<<"你要查找的学生信息是: "<<endl;
+			cout<<setiosflags(ios::left)<<setw(15)<<"学号"<<setw(15)<<"姓名"<<setw(15)<<"性别"<<setw(15)<<"联系电话"<<setw(15)<<"地址"<<endl;
+			cout<<setiosflags(ios::left)<<id<<ch<<endl;
+			system("pause");
+            break;
+		}
+	}
+}
+
+void Putin::change(){                                       //修改
+	ofstream fout("fileC.txt", ios::out);
+    ifstream fin("file.txt", ios::in); 
+    if (!fout || !fin)
+    {
+        cout<<"Sorry,the file is error" <<endl;
+        system("pause");
+        return;
+    }
+	ifstream din("file.txt", ios::in);
+	string dis;
+	cout<<setiosflags(ios::left)<<setw(15)<<"学号"<<setw(15)<<"姓名"<<setw(15)<<"性别"<<setw(15)<<"联系电话"<<setw(15)<<"地址"<<endl;
+	while(getline(din,dis)){
+		cout<<dis<<endl;
+	}
+
+    int i;
+    cout<<"你要修改的学生的学号 :"<<endl;
+    cin>>i;
+    string ch;
+    bool lar = true;
+    while (fin>>id)
+    {
+        getline(fin, ch);
+        if(i==id)
+        {
+            cout<<"你想修改的学生信息:"<<endl;
+            cout<<setiosflags(ios::left)<<setw(15)<<"学号"<<setw(15)<<"姓名"<<setw(15)<<"性别"<<setw(15)<<"联系电话"<<setw(15)<<"地址"<<endl;
+			cout<<setiosflags(ios::left)<<id<<ch<<endl;
+			cout<<"根据下面提示修改学生信息"<<endl;
+			cout<<"学号:"<<endl;
+			cin>>id;
+			cout<<"姓名:"<<endl;
+			cin>>name;
+			while(1){
+				cout<<"性别M/F（M：男，F：女）"<<endl;
+				cin>>sex;
+				if(sex =="m"||sex=="M"||sex=="F"||sex=="f"){
+					break;}
+				else{
+					cout<<"输入不规范，请重新输入"<<endl;
+				}
+			}
+			cout<<"联系电话"<<endl;
+			cin>>phonenum;
+			cout<<"住址"<<endl;
+			cin>>address;
+			fflush(stdin);
+            file();
+            lar= false;
+            break;
+        } 
+        fout<<id<<ch<<endl;
+    }  
+    if (lar)
+    {
+        cout<<"Sorry,can't find the student."<<endl;
+    }
+    else
+    {
+        while (getline(fin, ch))
+        {
+            fout<<ch<<endl;
+        }     
+        fout.close();
+        fin.close();       
+        ofstream out("file.txt", ios::out);
+        ifstream in("fileC.txt", ios::in);      
+        if (!out || !in)
+        {
+            cout<<"Sorry,can't find the file"<<endl;
+            system("pause");
+        }
+        while (getline(in, ch))
+        {
+            out<<ch<<endl;
+        }
+        out.close();
+        in.close();
+        cout<<"修改完成"<<endl;
+    }
+    system("pause"); 
+
+}
+
+void Putin::del(){                                                           //删除信息
+    ofstream fout("fileC.txt", ios::out);
+    ifstream fin("file.txt", ios::in); 
+	if (!fout || !fin)
+    {
+        cout<<"Cannot open the file" <<endl;
+        system("pause");
+    }
+	
+	ifstream din("file.txt", ios::in);
+	string dis;
+	cout<<"全部学生信息"<<endl;
+	cout<<setiosflags(ios::left)<<setw(15)<<"学号"<<setw(15)<<"姓名"<<setw(15)<<"性别"<<setw(15)<<"联系电话"<<setw(15)<<"地址"<<endl;
+	while(getline(din,dis)){
+		cout<<dis<<endl;
+	}
+	
+    int i;
+    cout<<"输入要删除的学生信息学号:"<<endl;
+    cin>>i;
+
+    bool lar = true;
+ 
+	string ch;
+    while (fin>>id)
+    {
+        getline(fin, ch);
+        if (i == id)
+        {
+            cout<<"你想删除的学生:"<<endl;
+            cout<<setiosflags(ios::left)<<setw(15)<<"学号"<<setw(15)<<"姓名"<<setw(15)<<"性别"<<setw(15)<<"年龄"<<endl;
+			cout <<setiosflags(ios::left)<<id<<ch<<endl;    
+            lar = false;
+            break;
+        }
+        fout<<id<<ch<<endl;
+    }
+    if (lar)
+    {
+        cout<<"Sorry,can't find the student." <<endl <<endl;
+    }
+    else
+    {
+		string yn;
+		cout<<"确认要删除?（Y/N）"<<endl;
+		cin>>yn;
+		if(yn=="N"||yn=="n"){
+			return;	
+		}
+
+        while (getline(fin, ch))
+        {
+            fout<<ch<<endl;
+        }
+        fout.close();
+        fin.close();
+        ofstream out("file.txt", ios::out);
+        ifstream in("fileC.txt", ios::in);
+        if (!out || !in)
+        {
+            cout <<endl <<"Sorry,the file is error" <<endl <<endl;
+            system("pause");
+            return;
+        }
+        
+        while (getline(in, ch))
+        {
+            out<<ch<<endl;
+        }
+        
+        out.close();
+        in.close();
+        cout <<endl <<"删除成功" <<endl <<endl;
+    }
+    system("pause");    
+}
+
+void Putin::display(){                                     //全部显示
+	string dis;
+	ifstream fin("file.txt",ios::in);
+	cout<<setiosflags(ios::left)<<setw(15)<<"学号"<<setw(15)<<"姓名"<<setw(15)<<"性别"<<setw(15)<<"联系电话"<<setw(15)<<"地址"<<endl;
+	while(getline(fin,dis)){
+		cout<<dis<<endl;
+	}
+	cout<<endl<<endl;
+}
+
+void selectfunction(){                //选择功能
+	int fun;
+	Putin A;
+
+	while(1){
+		cout<<"*******************"<<endl;
+	    cout<<"1.录入学生信息    *"<<endl;
+		cout<<"2.查询学生信息    *"<<endl;
+		cout<<"3.修改学生信息    *"<<endl;
+		cout<<"4.删除学生信息    *"<<endl;
+		cout<<"5.显示全部学生信息*"<<endl;
+		cout<<"6.退出本系统      *"<<endl;
+		cout<<"*******************"<<endl;
+		cout<<endl;
+		cout<<"输入功能序号,按Enter键："<<endl;
+		cin>>fun;
+		if(fun<1||fun>6){
+			cout<<"输入不规范，请重新输入"<<endl;
+		}
+
+		if(fun==1){
+		A.type(00,"None","None",000,"None");
+		A.show();
+		A.file();
+		}
+		
+		if(fun==3){
+			A.change();
+		}
+		if(fun==2){
+			A.search();
+		}
+
+		if(fun==4){
+			A.del();
+		}
+
+		if(fun==5){
+			cout<<"以下是全部学生信息"<<endl;
+			A.display();
+		}
+
+		if(fun==6){
+			exit(0);
+		}
+	}
+}
+
+int main(){
+	showmenue();
+	selectfunction();
+
+	return 0;
+}

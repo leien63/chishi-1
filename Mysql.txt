@@ -1,0 +1,133 @@
+alter table ---  update
+drop table   ---  delete
+create teble  --- insert
+
+
+
+/*表一：学生表（Student）*/
+CREATE TABLE Student
+(Sno CHAR(7) PRIMARY KEY,        /* Sno 是主码*/
+Sname CHAR(10),
+Ssex CHAR(2),
+Sage INT,
+Sdept CHAR(20)
+);
+
+/*表二：课程表（Course））*/
+CREATE TABLE Course
+(Cno CHAR(10) PRIMARY KEY,
+Cname CHAR(20),
+Ccredit INT,
+Semster INT,
+Period INT
+);
+
+/*表三：学生选课表（SC） */
+CREATE TABLE SC
+(Sno CHAR(7),
+Cno CHAR(10),
+Grade INT,
+XKLB CHAR(4),
+PRIMARY KEY (Sno,Cno),
+FOREIGN KEY(Sno) REFERENCES Student(Sno),   /* 完整性约束，引用Student的外码*/
+FOREIGN KEY(Cno) REFERENCES Course(Cno)     /* 完整性约束，引用Course的外码*/
+);
+
+/*使用SQL语句插入下面的数据*/
+/*Student的表*/
+/*方法一*/
+insert into Student(Sno,Sname,Ssex,Sage,Sdept)
+valuse('9512101','李勇','男',19	'计算机系')
+insert into Student(Sno,Sname,Ssex,Sage,Sdept)
+valuse('9512102','刘晨','男',20,'计算机系')
+insert into Student(Sno,Sname,Ssex,Sage,Sdept)
+valuse('9512103','王敏','女',20,'计算机系')
+insert into Student(Sno,Sname,Ssex,Sage,Sdept)
+valuse('9521101','张立','男',22,'信息系')
+insert into Student(Sno,Sname,Ssex,Sage,Sdept)
+valuse('9521102','吴宾','女',21,'信息系')
+insert into Student(Sno,Sname,Ssex,Sage,Sdept)
+valuse('9521103','张海','男',20,'信息系')
+insert into Student(Sno,Sname,Ssex,Sage,Sdept)
+valuse('9531101','钱小平','女',18,'数学系')
+insert into Student(Sno,Sname,Ssex,Sage,Sdept)
+valuse('9531102','王大力','男',19,'数学系');
+
+/*方法二*/
+insert into Student(Sno,Sname,Ssex,Sage,Sdept)
+selsct '9512101','李勇','男',19	'计算机系'
+union
+select '9512102','刘晨','男',20,'计算机系'
+。。。。。。。
+
+/*SC的表*/
+insert into SC(Sno,Cno,Grade,XKLB)
+valuse('9512101;,'C01',90,'必修')
+insert into SC(Sno,Cno,Grade,XKLB)
+valuse('9512101','C02',86,'选修')
+insert into SC(Sno,Cno,Grade,XKLB)
+valuse('9512101','C06',62,'必修')
+insert into SC(Sno,Cno,Grade,XKLB)
+valuse('9512102','C02',78,'选修')
+insert into SC(Sno,Cno,Grade,XKLB)
+valuse('9512102','C04',66,'必修')
+insert into SC(Sno,Cno,Grade,XKLB)
+valuse('9512102','C01',82,'选修')
+insert into SC(Sno,Cno,Grade,XKLB)
+valuse('9512102','C05',92,'必修')
+insert into SC(Sno,Cno,Grade,XKLB)
+valuse('9512102','C06',50,'必修')
+insert into SC(Sno,Cno,Grade,XKLB)
+valuse('9512103','C02',68,'选修')
+insert into SC(Sno,Cno,Grade,XKLB)
+valuse('9512103','C06',62,'必修')
+insert into SC(Sno,Cno,Grade,XKLB)
+valuse('9531101','C01',80,'选修')
+insert into SC(Sno,Cno,Grade,XKLB)
+valuse('9531101','C05',95,'必修')
+insert into SC(Sno,Cno,Grade,XKLB)
+valuse('9531102','C05',85,'必修');
+
+/*Course的表*/
+insert into Course(Cno,Cname,Ccredit,Semster)
+valuse('C01','计算机文化基础',3,1')
+insert into Course(Cno,Cname,Ccredit,Semster)
+valuse('C02','VB',2,3)
+insert into Course(Cno,Cname,Ccredit,Semster)
+valuse('C03','计算机网络',4,7)
+insert into Course(Cno,Cname,Ccredit,Semster)
+valuse('C04','数据库基础',6,6)
+insert into Course(Cno,Cname,Ccredit,Semster)
+valuse('C05','高等数学',8,2)
+insert into Course(Cno,Cname,Ccredit,Semster)
+valuse('C06','数据结构',5,4)
+
+
+/*3.创建索引*/
+CREATE UNIOUE INDEX Stusna ON Student(Sname DESC);
+CREATE UNIQUE INDEX Cousem ON Course(Semster);
+CREATE UNIQRE INDEX SCno ON SC(Sno ASC, Cno DESC);
+
+/*4.修改表结构*/
+ALTER TABLE Student ALTER COLUMN varchar(20) not null;
+ALTER TABLE Student add Sentrance DATE;
+
+ /*删除对象*/
+DROP INDEX Student.Stusna;
+DROP INDEX Course.Cousem;
+DROP INDEX SC.SCno;
+
+DROP TABLE SC;
+DROP TABLE Student;
+DROP table Course;
+
+/*6.删除和修改记录*/
+update SC set grade = grade + 1  where Cno = 'C02';  /*将选修C02课程的成绩增加1分；*/
+delete SC where Sno = '9531102';/*删除学号为9531102的学生选课记录；*/
+delete SC;/*写出删除所有选课记录的SQL；*/
+
+/*根据上面的三种表，写出完成如下查询功能的SQL语句：*/
+select * from SC;   /*（1）查询学生选课表中的全部数据；*/
+
+http://www.doc88.com/p-7778000190478.html
+

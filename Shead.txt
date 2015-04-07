@@ -1,0 +1,275 @@
+第二个头文件TLB。H
+
+class TLb
+{
+public:
+int Fhn(){return N;}
+int Fhm(){return M;}
+struct student *Del( struct student *head,int n,int m);                    //删除记录
+struct student *Creat();                                                   //新建文件
+void Save(struct student *head,int n,int m);                               //存盘
+struct student *Insert( struct student *head,int n,int m);                 //插入记录
+struct student *Loadlb();                                                  //读盘
+void Print(struct student *head,int n,int m);                              //输出
+private:
+int N,M;
+};
+
+struct student *TLb::Del( struct student *head,int n,int m)
+ {
+
+     struct student *p0,*p1,*p2;
+ p2=p1=p0=head;
+ if(head==0){printf("\n\n已经没有文件了,不能删除!\n");goto end;}
+ printf("\n请选择删除方式:\n\n");
+     printf("\n  用学号删除请输入 1\n");
+     printf("  用姓名删除请输入 2\n");
+     printf("  结束任务请输入   3\n");
+ int a;
+ scanf("%d",&a);
+ if(a==1)
+ {long b;
+ printf("\n请输入要删除的学号:\n");
+ scanf("%ld",&b);
+    if(b==p1->num&&p1==p0)
+{head=p1->next;
+n--;printf(" \n  %d号同学的资料已删除,此文件还有%d个记录!\n",b,n);goto end;
+}
+      while(p1->num!=b&&p1->next!=0)
+  {p2=p1;p1=p1->next;
+  }
+            if(b==p1->num&&p1!=p0) 
+{p2->next=p1->next;
+     n--;printf("  \n %d号同学的资料已删除,此文件还有%d个记录!\n",b,n);goto end;
+}
+ else
+ {printf("\n\n没有这位同学,请核对后重新输入!\n");
+ }
+
+ }
+      if(a==2)
+  {
+  char c[30];
+  printf("\n请输入要删除的学生姓名:\n");
+  scanf("%s",c);
+ if(strcmp(c,p1->name)==0&&p1==p0)
+ {head=p1->next;
+               n--;printf("\n   %s同学的资料已删除,此文件还有%d个记录!\n",c,n);goto end;
+ }
+   while(strcmp(c,p1->name)!=0&&p1->next!=0)
+   { 
+  p2=p1;p1=p1->next;
+   }
+      if(strcmp(c,p1->name)==0&&p1!=p0)
+  {p2->next=p1->next;
+                     n--;printf("\n   %s同学的资料已删除,此文件还有%d个记录!\n",c,n);goto end;
+  }
+    else
+{printf("\n\n没有这位同学,请核对后重新输入!\n");
+}
+  }   if(a>=3)printf("    结束任务!\n");
+end:{N=n;M=m;
+      return (head);
+}
+}
+struct student *TLb::Creat()
+ {
+  int n,m;
+n=0;struct student *head=0;
+struct student *p1,*p2;
+int j,a=1;
+printf("\n请输入科目数:\n");
+scanf("%d",&m);
+   while(a!=0)
+   {
+printf("\n\n添加记录请输入    1\n");
+printf("结束任务请输入    0\n");
+scanf("%d",&a);
+     if(a==1)
+ {
+n++;
+        if(n==1)
+{ p1=p2=(struct student *)malloc(sizeof(struct student));
+head=p1;
+}
+
+p2->next=p1;
+p2=p1;
+
+printf("\n请输入学号\n");
+scanf("%ld",&p1->num);
+printf("请输入%ld号同学姓名\n",p1->num);
+scanf("%s",p1->name);
+printf("请输入%s同学电话\n",p1->name);
+scanf("%s",p1->tel);
+printf("请输入%s同学地址\n",p1->name);
+scanf("%s",p1->add);
+printf("请输入%s同学E_mail\n",p1->name);
+scanf("%s",p1->email);
+printf("请输入%s同学",p1->name);
+      for(j=0;j<m;j++)
+ { printf("第%d科成绩(共%d科)\n",j+1,m);
+          scanf("%ld",&p1->score[j]);
+ }
+ p1=(struct student *)malloc(sizeof(struct student));
+
+}
+     if(a==0)
+ { p2->next=0;
+     break;
+ }
+   }
+printf("\n\n已建立新文件,此文件有%d个记录\n\n",n);
+N=n;M=m;
+   
+return (head);
+
+ }
+void TLb::Save(struct student *head,int n,int m) 
+{
+
+struct student *p;
+int i,w=0;
+p=head;
+FILE *fp;
+   char f[50];
+   printf("请输入文件名:\n");
+   scanf("%s",f);
+   fp=fopen(f,"wb");
+   for(i=0;i<n;i++)
+   {if(fwrite(p,sizeof(struct student),1,fp)!=1)
+   {printf("文件写入错误!\n");
+   }w++;
+   p=p->next;
+   printf("正在写入文件\n");
+   }
+   fwrite(&n,sizeof(int),1,fp);
+   fwrite(&m,sizeof(int),1,fp);
+   if(w==n){printf("  \n      文件已存盘!\n\n\n");}
+   fclose(fp);
+}
+struct student *TLb::Insert(struct student *head,int n,int m)
+{
+ struct student *p0,*p1,*p2;
+
+ int j;
+p1=p2=head;
+p0=(struct student *)malloc(sizeof(struct student));
+printf("\n请输入要插入的学号\n");
+scanf("%ld",&p0->num);
+printf("请输入%ld号同学姓名\n",p0->num);
+scanf("%s",p0->name);
+printf("请输入%s同学电话\n",p0->name);
+scanf("%s",p0->tel);
+printf("请输入%s同学地址\n",p0->name);
+scanf("%s",p0->add);
+printf("请输入%s同学E_mail\n",p0->name);
+scanf("%s",p0->email);
+printf("请输入%s同学",p0->name);
+    for(j=0;j<m;j++)
+{ printf("第%d科成绩(共%d科)\n",j+1,m);
+          scanf("%ld",&p0->score[j]);
+}
+  if(head==0)
+  {head=p0;
+  p0->next=0;
+  }  
+    else
+{
+      if(p0->num<p1->num&&p1==head)
+  {head=p0;
+  p0->next=p1;n++;
+  goto end;
+  }
+while(p0->num>=p1->num&&p1->next!=0)
+{p2=p1;p1=p1->next;
+}
+   if(p0->num<p1->num)
+   {
+      
+   p2->next=p0;
+   p0->next=p1;
+
+   }
+      else
+  {p1->next=p0;
+   p0->next=0;
+  }
+}
+             
+n++;
+printf("\n\n已插入新记录,现在此文件有%d个记录\n\n",n);goto end;
+end:{N=n;M=m;
+   return (head);
+}
+}
+struct student *TLb::Loadlb() 
+{
+struct student *head,*p1,*p2;
+int n,m;
+struct student stud[2001];
+int i,j;
+FILE *fp;
+   char f[50];
+   printf("请输入文件名:\n");
+   scanf("%s",f);
+   fp=fopen(f,"rb");
+   fseek(fp,-8L,2);
+ fread(&n,sizeof(int),1,fp);
+fseek(fp,-4L,2);
+ fread(&m,sizeof(int),1,fp);
+ rewind(fp);
+    for(i=0;i<n;i++)
+{
+
+   if(fread(&stud[i],sizeof(struct student),1,fp)!=1)printf("读入错误\n");
+        
+}
+
+  p1=(struct student *)malloc(sizeof(struct student));
+           head=p2=p1;
+  
+    for(i=0;i<n;i++)
+{ 
+  
+          
+p2->num=stud[i].num;
+            strcpy(p2->name,stud[i].name);
+            strcpy(p2->tel,stud[i].tel);
+strcpy(p2->add,stud[i].add);
+    strcpy(p2->email,stud[i].email);
+for(j=0;j<m;j++)
+{p2->score[j]=stud[i].score[j];
+}
+if(i<n-1)
+{p1=(struct student *)malloc(sizeof(struct student));
+ p2->next=p1;
+ p2=p1;
+}
+
+
+} p2->next=0;
+N=n;M=m;
+return (head);
+}
+ void TLb::Print(struct student *head,int n,int m)
+{
+
+struct student *p;
+int j;
+     p=head;
+ if(head==0){printf("\n  没有文件不能输出!\n");goto end;}
+ while(p!=NULL)
+ {printf("学号\t姓名\t\t电话\t\t地址\n");
+printf("%ld\t%s\t\t%s\t\t%-20s%\n",p->num,p->name,p->tel,p->add);
+    printf("E_mail\t\t\t分数\n");
+    printf("%-20s\t",p->email);
+  for(j=0;j<m;j++)
+  {printf("%-4ld",p->score[j]);
+  }
+  p=p->next; printf("\n\n");
+  
+ }
+ printf("\n\n文件输出完毕,此文件共有%d个记录",n);
+end:{printf("\n");}
+}

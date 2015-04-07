@@ -1,0 +1,340 @@
+第一个头文件：TJGT。H
+struct cj                              //定义新结构体类型
+{
+        long nu;
+char na[30];
+long sc[20];
+long tatol;
+long pj;
+  };
+struct student
+{
+long num;
+char name[30];
+char tel[50];
+char add[70];
+char email[70];
+long score[20];
+struct student *next;
+};
+class TJgt
+{
+public:
+int Fhn(){return N;}
+int Fhm(){return M;}
+void Czzl(struct student *p,int n,int m);      /*定义czzl函数查找某学生资料*/
+void Czxs(struct student *p,int n,int m);          /*定义czxs函数查找某学生有否挂科*/
+void Cz(struct student *p,int n,int m);            /*定义cz函数查找所有学生成绩及有否挂科*/
+void Wjpb(struct student *p,int n,int m);          /*定义wjPb函数从文件排榜*/
+struct cj *Loadcj();                               //从磁盘读入成绩文件
+struct student *Load();                            //从磁盘读入资料文件(非链表)
+private:
+int N,M;
+};
+void TJgt::Czzl(struct student *p,int n,int m)   /*定义czzl函数查找某学生资料*/
+{
+char c[30];
+long b;
+int a,i,h;
+printf("\n请选择查找方式:      \n\n");
+printf("用学号查找请输入  \"1\"\n");
+printf("用姓名查找请输入  \"2\"\n");
+printf("结束任务请输入    \"0\"\n");
+scanf("%d",&a);
+if(a==1)
+{printf("请输入学号:\n");
+scanf("%ld",&b);
+  h=0; printf("\n");
+for(i=0;i<n;i++,p++)
+     {
+if(b!=p->num)
+{h++;
+}
+      if(b==p->num)
+  {printf("学号\t姓名\t\t电话\t\t地址\n");
+  printf("%ld\t%s\t\t%s\t\t%-20s%\n",p->num,p->name,p->tel,p->add);
+  printf("E_mail\n");
+  printf("%-20s\t",p->email);
+  }
+        if(h==n)
+        {printf("\n\n没有这位同学,请查证!\n");
+}
+}
+}
+    if(a==2)
+{printf("请输入姓名:\n");
+       scanf("%s",c);
+   h=0;printf("\n");
+   for(i=0;i<n;i++,p++)
+   {
+          if(strcmp(c,p->name)!=0)
+  {h++;
+  } 
+        if(strcmp(c,p->name)==0)
+{printf("学号\t姓名\t\t电话\t\t地址\n");
+printf("%ld\t%s\t\t%s\t\t%-20s%\n",p->num,p->name,p->tel,p->add);
+           printf("\nE_mail\n");
+           printf("%-20s\t",p->email);
+}
+}
+          if(h==n)
+  { printf("\n\n没有这位同学,请查证!\n");
+  }
+}
+
+}
+void TJgt::Czxs(struct student *p,int n,int m)   /*定义czxs函数查找某学生有否挂科*/
+{
+char c[30];
+long b;
+int a,i,j,k,l,h;
+printf("\n请选择查找方式:      \n\n");
+printf("用学号查找请输入  \"1\"\n");
+printf("用姓名查找请输入  \"2\"\n");
+printf("结束任务请输入    \"0\"\n");
+scanf("%d",&a);
+if(a==1)
+{
+printf("请输入学号:\n");
+scanf("%ld",&b);
+h=0; printf("\n");
+for(i=0;i<n;i++,p++)
+      {if(b!=p->num)
+  {h++;
+  }
+  if(b==p->num)
+{ printf("%ld号学生的成绩是:\n",p->num);
+      for(l=0;l<m;l++)
+  {printf("%ld\t",p->score[l]);
+  }
+printf("\n");
+     for(j=0,k=0;j<m;j++)
+ {
+if(p->score[j]<60)
+{k++;
+}
+ }
+if(k!=0)
+{printf("\n\n%ld号%s同学成绩不理想,挂了%d科,需要继续努力!\n",p->num,p->name,k);
+}
+if(k==0)
+{printf("\n\n%ld号%s同学成绩很好,没有挂科.\n",p->num,p->name);
+}
+
+}if(h==n)
+        {printf("\n\n没有这位同学,请查证!\n");
+}
+}
+}
+
+    if(a==2)
+{
+printf("请输入姓名:\n");
+       scanf("%s",c);
+   h=0;printf("\n");
+   for(i=0;i<n;i++,p++)
+   {
+     if(strcmp(c,p->name)!=0)
+ {h++;
+ } 
+  
+if(strcmp(c,p->name)==0)
+{ printf("%s同学的成绩是:\n",c);
+    for(l=0;l<m;l++)
+   {printf("%ld\t",p->score[l]);
+   } printf("\n");
+    for(j=0,k=0;j<m;j++)
+{
+if(p->score[j]<60)
+{k++;
+}
+}
+if(k!=0)
+{printf("\n%s同学成绩不理想,挂了%d科,需要继续努力!\n",p->name,k);
+}
+if(k==0)
+{printf("\n%s同学成绩很好,没有挂科.\n",p->name);
+}
+
+}if(h==n)
+{printf("\n\n没有这位同学,请查证!\n");
+}
+}
+
+}
+}
+void TJgt::Cz(struct student *p,int n,int m)     /*定义cz函数查找所有学生成绩及有否挂科*/
+{
+int i,j,k,l,q=0;
+for(i=0;i<n;i++,p++)
+{for(j=0,k=0;j<m;j++)
+{
+if(p->score[j]<60)
+{k++;
+}
+}
+if(k!=0)
+{printf("\n%s同学成绩是:\n",p->name);
+for(l=0;l<m;l++)
+{printf("%-4ld",p->score[l]);
+}
+printf("\n%s同学成绩不理想,挂了%d科,需要继续努力!\n\n",p->name,k);
+q++; }
+}if(q==0)printf("没有挂科的同学\n");
+}
+void TJgt::Wjpb(struct student *p,int n,int m)       /*定义wjPb函数从文件排榜*/
+{
+int i,j,o,w;
+long a[70],b[70],sum,a1,b1;
+struct student *p1[70];
+struct student *q;
+  for(i=0;i<n;i++,p++)
+  {
+for(j=0,sum=0;j<m;j++)
+{sum+=p->score[j];
+}
+  a[i]=sum;
+      b[i]=sum/m;
+      p1[i]=p;
+  }
+      for(i=0;i<n-1;i++)                       //总成绩按大小排序
+  {
+  for(o=0;o<n-1-i;o++)
+  {
+     if(a[o]<a[o+1])
+ {a1=a[o];a[o]=a[o+1];a[o+1]=a1;
+             q=p1[o];p1[o]=p1[o+1];p1[o+1]=q;
+             b1=b[o];b[o]=b[o+1];b[o+1]=b1;
+ }
+  }
+  }
+printf("排榜成绩如下:\n");
+
+for(j=0;j<n;j++)
+{printf("第%d名%ld号%-s同学",j+1,p1[j]->num,p1[j]->name);
+printf("  分数");
+for(i=0;i<m;i++)
+{printf("%-4ld",p1[j]->score[i]);}
+printf("总分%-4ld\t平均分%-4ld\n",a[j],b[j]);}
+printf("\n\n祝贺%s同学获得第一名\n",p1[0]->name);
+
+printf("\n\n\n    是否存盘?\n\n");
+printf("\n存盘请输入  1\n");
+printf("结束任务请输入0\n");
+scanf("%d",&w);
+if(w==1)
+{  struct cj xs[70];   
+    for(i=0;i<n;i++)
+{
+xs[i].nu=p1[i]->num;
+strcpy(xs[i].na,p1[i]->name);
+for(j=0;j<m;j++)
+{xs[i].sc[j]=p1[i]->score[j];}
+        xs[i].tatol=a[i];
+        xs[i].pj=b[i];
+}
+
+  FILE *fp;                                       //把成绩存盘
+      int q=0;
+       char filename[20];
+printf("\n  请输入文件名: \n");
+      scanf("%s",filename);
+      if((fp=fopen(filename,"wb"))==NULL)                //存为二进制文件
+  {
+   printf("不能打开文件!\n");
+  }
+         for(i=0;i<n;i++)
+ {if(fwrite(&xs[i],sizeof(struct cj),1,fp)!=1)
+   {printf("\n\n文件写入错误!\n\n");}
+       q++;
+ }
+      if(q==n)
+  {printf("\n     资料成功写入!\n");
+  }
+    if(fwrite(&n,sizeof(int),1,fp)!=1)
+{printf("整数写入错误!\n");
+}
+            fwrite(&m,sizeof(int),1,fp);
+fclose(fp);
+} 
+               if(w==0)
+   {printf("\n\n                          结束任务!\n");
+   }
+    
+}          
+struct cj *TJgt::  Loadcj()                                 //从磁盘读入成绩文件
+{
+int n,m;
+struct cj xs[70];  
+    struct cj *p;                       //定义新结构体类型   
+p=xs;
+FILE *fp;
+char f[30];
+int i,j;
+printf("请输入文件名  \n");
+scanf("%s",f);
+if((fp=fopen(f,"rb"))==0)
+{printf("没有此文件!\n");
+}
+
+       fseek(fp,-8L,2);
+   if(fread(&n,sizeof(int),1,fp)!=1)
+   {
+   printf("\n\n\n                           警告!\n");
+   printf("\n\n      文件读入错误!请确定该文件是由本程序写入磁盘的!\n");
+   }
+     #ifdef LOVE
+   printf("后面的整数是%d\n",n);
+     #endif
+ fseek(fp,-4L,2);
+   if(fread(&m,sizeof(int),1,fp)!=1)
+   {printf("\n\n\n                           警告!\n");
+   printf("\n\n      文件读入错误!请确定该文件是由本程序写入磁盘的!\n");
+   }
+  #ifdef LOVE
+   printf("后面的整数是%d\n",m);
+     #endif
+   rewind(fp);
+        for(i=0;i<n;i++)
+if(fread(&xs[i],sizeof(struct cj),1,fp)!=1)
+{if(feof(fp)) printf("文件读入错误!\n");
+}
+    printf("排榜成绩如下:\n");
+
+for(i=0;i<n;i++)
+{printf("第%d名%d号%s同学",i+1,xs[i].nu,xs[i].na);
+printf("  分数");
+for(j=0;j<m;j++)
+{printf("%-4ld",xs[i].sc[j]);}
+printf("总分%-4ld平均分%-4ld\n",xs[i].tatol,xs[i].pj);}
+printf("\n\n祝贺%s同学获得第一名\n",xs[0].na);
+
+N=n;M=m;
+return (p);
+}
+struct student *TJgt::Load()                                 //从磁盘读入资料文件
+{
+int m,n;
+struct student *p;
+static struct student stu[70];
+p=stu;
+FILE *fp;
+char f[30];
+int i;
+printf("请输入学生资料的文件名  \n");
+scanf("%s",f);
+if((fp=fopen(f,"rb"))==0)
+{printf("没有此文件!\n");
+}
+
+       fseek(fp,-8L,2);
+   if(fread(&n,sizeof(int),1,fp)!=1)
+   {
+   printf("\n\n\n                           警告!\n");
+   printf("\n\n      文件读入错误!请确定该文件是由本程序写入磁盘的!\n");
+   }
+     #ifdef LOVE
+   printf("后面的整数是%d\n",n);
+     #endif
+ fseek(fp,-4L,2);
+   if(fread(&m,sizeof(int),1,fp)!=1)

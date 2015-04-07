@@ -1,0 +1,63 @@
+#include <iostream.h>
+#include "stdio.h"
+#include "string.h"
+#include "malloc.h"
+#include "tjgt.h"
+#include "tlb.h"
+void main()
+{static char a[]="qinwei";//密码
+char b[7];
+printf("\n\n\n          请输入密码:\n\n\n");
+scanf("%s",b);
+if(strcmp(b,a)==0)
+{
+TJgt w;
+    TLb q;
+struct student *head;
+  struct cj *p;
+int a,b,c; 
+int n,m;
+fuck:cout<<"\n\n  建立 新学生文件请输入               1"<<endl;
+     cout<<"  从磁盘 读入《学生文件》 请输入      2"<<endl;
+     cout<<"  向磁盘学生文件 插入记录请输入       3"<<endl;
+     cout<<"  删除 磁盘学生文件的某一记录请输入   4\n"<<endl;
+   
+     cout<<"  把学生文件中成绩 排榜 请输入        5"<<endl;
+     cout<<"  从磁盘 读入《排榜成绩文件》 请输入  6\n"<<endl;
+     cout<<"  查 所有挂科学生 请输入              7"<<endl;
+     cout<<"  查 某学生成绩 及有否挂科请输入      8"<<endl;
+     cout<<"  查 某学生资料 请输入                9\n"<<endl;
+ scanf("%d",&a);
+   switch(a)
+   {
+   case 1: head=q.Creat();
+   cout<<"\n     是否存盘?    1/0\n"<<endl;
+   cin>>c;
+   if(c==1){n=q.Fhn();m=q.Fhm();q.Save(head,n,m);}
+  else cout<<"      结束任务！"<<endl;
+  break;
+case 2: head=q.Loadlb();n=q.Fhn();m=q.Fhm();q.Print(head,n,m);break;
+    case 3: head=q.Loadlb();n=q.Fhn();m=q.Fhm();head=q.Insert(head,n,m); cout<<"\n     是否存盘?    1/0\n"<<endl;
+   cin>>c;
+   if(c==1){n=q.Fhn();m=q.Fhm();q.Save(head,n,m);}
+  else cout<<"      结束任务！"<<endl;break;
+          case 4: head=q.Loadlb();n=q.Fhn();m=q.Fhm();head=q.Del(head,n,m); cout<<"\n     是否存盘?    1/0\n"<<endl;
+   cin>>c;
+   if(c==1){n=q.Fhn();m=q.Fhm();q.Save(head,n,m);}
+  else cout<<"      结束任务！"<<endl;break;
+    
+  case 5:{printf("\n");head=w.Load();n=w.Fhn();m=w.Fhm();w.Wjpb(head,n,m); break;}                 /*调用pb函数*/
+          case 6:{printf("\n");p=w.Loadcj();; break;}                 /*调用ZL函数*/
+  case 7:{printf("\n");head=w.Load();n=w.Fhn();m=w.Fhm();w.Cz(head,n,m); break;}                 /*调用cz函数*/
+  case 8:{printf("\n");head=w.Load();n=w.Fhn();m=w.Fhm();w.Czxs(head,n,m); break;}               /*调用czxs函数*/
+          case 9:{printf("\n");head=w.Load();n=w.Fhn();m=w.Fhm();w.Czzl(head,n,m); break;}               /*调用czzl函数*/
+  default:break;
+   }
+  
+printf("\n\n      是否继续？1/0\n");
+scanf("%d",&b);
+if(b==1){goto fuck;}if(b==0){printf(" \n\n  结束任务!\n");return;} 
+}
+else printf("\n\n\n      密码不正确,您无权使用本程序!\n\n");;
+ 
+}
